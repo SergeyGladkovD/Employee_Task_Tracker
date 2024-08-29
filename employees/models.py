@@ -1,3 +1,16 @@
 from django.db import models
 
-# Create your models here.
+
+NULLABLE = {'blank': True, 'null': True}
+
+
+class Employee(models.Model):
+    full_name = models.CharField(max_length=100, verbose_name="Full Name", help_text="Введите ФИО")
+    post = models.CharField(max_length=100, verbose_name="Post", help_text="Введите должность")
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+        verbose_name = "Employee"
+        verbose_name_plural = "Employees"
