@@ -9,6 +9,6 @@ urlpatterns = [
     path('task/list/', TaskListAPIView.as_view(), name='task-list'),
     path('task/<int:pk>/', TaskRetrieveAPIView.as_view(), name='task-retrieve'),
     path('task/update/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update'),
-    path('task/delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-destroy'),
+    path('task/delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-delete'),
 
 ]
