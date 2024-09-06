@@ -5,10 +5,10 @@ from task_tracker.views import TaskCreateAPIView, TaskListAPIView, TaskRetrieveA
 app_name = TaskTrackerConfig.name
 
 urlpatterns = [
-    path('task/create/', TaskCreateAPIView.as_view(), name='task-create'),
-    path('task/list/', TaskListAPIView.as_view(), name='task-list'),
-    path('task/<int:pk>/', TaskRetrieveAPIView.as_view(), name='task-retrieve'),
-    path('task/update/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update'),
-    path('task/delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-delete'),
+    path('create/', TaskCreateAPIView.as_view(), name='task-create'),
+    path('list/', TaskListAPIView.as_view(), name='task-list'),
+    path('<int:pk>/', TaskRetrieveAPIView.as_view(), name='task-retrieve'),
+    path('update/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update'),
+    path('delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-delete'),
 
 ]
