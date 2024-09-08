@@ -1,26 +1,40 @@
 from task_tracker.models import Task
-from task_tracker.serializers import TaskSerializer
+from task_tracker.serializers import TaskSerializer, MainTaskSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 
+
 class TaskCreateAPIView(CreateAPIView):
+    """Создание задачи."""
     serializer_class = TaskSerializer
 
 
 class TaskListAPIView(ListAPIView):
+    """Просмотр листа задач."""
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 class TaskRetrieveAPIView(RetrieveAPIView):
+    """Просмотр задачи."""
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 class TaskUpdateAPIView(UpdateAPIView):
+    """Редактирование задачи."""
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 class TaskDestroyAPIView(DestroyAPIView):
+    """Удаление задачи."""
     queryset = Task.objects.all()
 
+
+class TaskImportantListAPIView(ListAPIView):
+    """Поиск менее загруженных сотрудников."""
+    serializer_class = MainTaskSerializer
+    queryset = Task.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.all()

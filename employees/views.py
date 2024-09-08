@@ -1,38 +1,39 @@
 from django.db.models import Count, Q
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
-
 from employees.models import Employee
 from employees.serializers import EmployeeSerializer, EmployeeTaskSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 
-from task_tracker.models import Task
-
 
 class EmployeeCreateAPIView(CreateAPIView):
+    """Создание работника."""
     serializer_class = EmployeeSerializer
 
 
 class EmployeeListAPIView(ListAPIView):
+    """Просмотр листа работников."""
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
 
 
 class EmployeeRetrieveAPIView(RetrieveAPIView):
+    """Просмотр работника."""
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
 
 
 class EmployeeUpdateAPIView(UpdateAPIView):
+    """Редактирование работника."""
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
 
 
 class EmployeeDestroyAPIView(DestroyAPIView):
+    """Удаление работника."""
     queryset = Employee.objects.all()
 
 
 class EmployeeTaskListAPIView(ListAPIView):
+    """Просмотр для подсчета активных задач работника."""
     queryset = Employee.objects.all()
     serializer_class = EmployeeTaskSerializer
 
