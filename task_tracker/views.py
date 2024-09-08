@@ -39,7 +39,7 @@ class TaskImportantListAPIView(ListAPIView):
     def get_queryset(self):
         return Task.objects.filter(
             other__employee__isnull=False,
-            other__status=0,
-            executor__isnull=True,
+            other__status='start',
+            employee__isnull=True,
             status='start'
         )
