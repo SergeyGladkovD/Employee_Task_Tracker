@@ -29,7 +29,6 @@ class MainTaskSerializer(ModelSerializer):
 
     def get_available_employees(self, task):
         employees = Employee.objects.all()
-        print(employees)
         emp_data = {}
         for emp in employees:
             list_task = emp.tasks.filter(status='start')
@@ -38,9 +37,8 @@ class MainTaskSerializer(ModelSerializer):
         available_employees = [
             emp.full_name for emp in employees if emp_data[emp.pk] == min_count
         ]
-        print(available_employees)
         for emp in employees:
-            tasks = Task.objects.filter(post=task.id)
+            tasks = Task.objects.filter(parent_task=task.id)
             for t in tasks:
                 if t.employee == emp and emp.full_name not in available_employees:
                     available_employees.append(emp.full_name)
