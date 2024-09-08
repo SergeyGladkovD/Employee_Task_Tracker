@@ -11,5 +11,5 @@ urlpatterns = [
     path('<int:pk>/', TaskRetrieveAPIView.as_view(), name='task-retrieve'),
     path('update/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update'),
     path('delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-delete'),
-    path('task_tracker/', TaskImportantListAPIView.as_view(), name='task-tracker'),
+    path('tracker/', TaskImportantListAPIView.as_view(), name='tracker'),
 ]
