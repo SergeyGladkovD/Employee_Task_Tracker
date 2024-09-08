@@ -1,6 +1,7 @@
 from django.urls import path
 from task_tracker.apps import TaskTrackerConfig
-from task_tracker.views import TaskCreateAPIView, TaskListAPIView, TaskRetrieveAPIView, TaskUpdateAPIView, TaskDestroyAPIView
+from task_tracker.views import TaskCreateAPIView, TaskListAPIView, TaskRetrieveAPIView, TaskUpdateAPIView, \
+    TaskDestroyAPIView, TaskImportantListAPIView
 
 app_name = TaskTrackerConfig.name
 
@@ -10,5 +11,5 @@ urlpatterns = [
     path('<int:pk>/', TaskRetrieveAPIView.as_view(), name='task-retrieve'),
     path('update/<int:pk>/', TaskUpdateAPIView.as_view(), name='task-update'),
     path('delete/<int:pk>/', TaskDestroyAPIView.as_view(), name='task-delete'),
-
+    path('task_tracker/', TaskImportantListAPIView.as_view(), name='task-tracker'),
 ]
