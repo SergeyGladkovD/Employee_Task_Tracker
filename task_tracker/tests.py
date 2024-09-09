@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
+from employees.models import Employee
 from task_tracker.models import Task
 
 
@@ -9,17 +9,17 @@ class TaskTestCase(APITestCase):
     """Тесты для модели задачи."""
     def setUp(self):
         """Предварительная настройка."""
-        self.task = Task.objects.create(name='Тест задача', parent_task=None, executor=None, deadline='2024-09-12', status='start')
+        self.task = Task.objects.create(name='Тест задача', parent_task=None, employee=None, deadline='2024-09-12', status='start')
 
     def test_task_create(self):
         """Тест на создание модели."""
         url = reverse('task_tracker:task-create')
-        data = {'name': 'Написать программу', 'parent_task': None, 'executor': None, 'deadline': '2024-12-12', 'status': 'start'}
+        data = {'name': 'Написать программу', 'parent_task': None, 'employee': None, 'deadline': '2024-12-12', 'status': 'start'}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['name'], 'Написать программу')
         self.assertEqual(response.data['parent_task'], None)
-        self.assertEqual(response.data['executor'], None)
+        self.assertEqual(response.data['employee'], None)
         self.assertEqual(response.data['deadline'], '2024-12-12')
         self.assertEqual(response.data['status'], 'start')
         self.assertEqual(Task.objects.count(), 2)
@@ -32,7 +32,7 @@ class TaskTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data['name'], self.task.name)
         self.assertEqual(data['parent_task'], self.task.parent_task)
-        self.assertEqual(data['executor'], self.task.executor)
+        self.assertEqual(data['employee'], self.task.employee)
         self.assertEqual(data['deadline'], self.task.deadline)
         self.assertEqual(data['status'], self.task.status)
 
@@ -56,3 +56,23 @@ class TaskTestCase(APITestCase):
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Task.objects.count(), 1)
+
+
+    def test_important_task_list(self):
+        """Тест поиск менее загруженных сотрудников."""
+        employee = Employee.objects.create(
+            full_name='Тест работник',
+            post='Тест пост'
+        )
+        Task.objects.create(
+            name='Тест задача',
+            employee=employee,
+            deadline=None,
+            status='start',
+            parent_task=self.task,
+        )
+        url = reverse('task_tracker:tracker')
+        response = self.client.get(url, format='json')
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(data[0]['available_employees'], ['Тест работник'])

@@ -15,7 +15,7 @@ class EmployeeTestCase(APITestCase):
 
     def test_employee_create(self):
         """Тест на создание модели."""
-        url = reverse('employees:employee_create')
+        url = reverse('employees:employee-create')
         data = {'full_name': 'Гладков Сергей', 'post': 'developer'}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -25,7 +25,7 @@ class EmployeeTestCase(APITestCase):
 
     def test_employee_retrieve(self):
         """Тест на просмотр модели."""
-        url = reverse('employees:employee_retrieve', args=(self.employee.id,))
+        url = reverse('employees:employee-retrieve', args=(self.employee.id,))
         response = self.client.get(url, format='json')
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -34,7 +34,7 @@ class EmployeeTestCase(APITestCase):
 
     def test_employee_update(self):
         """Тест на редактор модели."""
-        url = reverse('employees:employee_update', args=(self.employee.id,))
+        url = reverse('employees:employee-update', args=(self.employee.id,))
         response = self.client.patch(url, data={'full_name': 'updated name', 'post': 'update developer'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['full_name'], 'updated name')
@@ -42,14 +42,14 @@ class EmployeeTestCase(APITestCase):
 
     def test_employee_delete(self):
         """Тест на удаление модели."""
-        url = reverse('employees:employee_delete', args=(self.employee.id,))
+        url = reverse('employees:employee-delete', args=(self.employee.id,))
         response = self.client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Employee.objects.count(), 0)
 
     def test_employee_list(self):
         """Тест на просмотр листа моделей."""
-        url = reverse('employees:employee_list')
+        url = reverse('employees:employee-list')
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Employee.objects.count(), 1)
@@ -58,12 +58,12 @@ class EmployeeTestCase(APITestCase):
         """Тест для подсчета активных задач работника"""
         Task.objects.create(
             name="Test task",
-            executor=self.employee,
+            employee=self.employee,
             deadline=None,
             status="start",
             parent_task=None,
         )
-        url = reverse('employees:employee_task')
+        url = reverse('employees:employee-task')
         response = self.client.get(url, format='json')
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
