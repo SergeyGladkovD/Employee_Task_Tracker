@@ -9,18 +9,20 @@ from task_tracker.validators import NameValidator
 
 class TaskSerializer(ModelSerializer):
     """Сериалайзер модели задачи."""
+
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = "__all__"
         validators = [
-            NameValidator(field='name'),
-            UniqueTogetherValidator(fields=['name'], queryset=Task.objects.all()),
+            NameValidator(field="name"),
+            UniqueTogetherValidator(fields=["name"], queryset=Task.objects.all()),
         ]
 
 
 class MainTaskSerializer(ModelSerializer):
     """Сериалайзер для поиска менее загруженных сотрудников."""
-    tasks = TaskSerializer(source='other', many=True)
+
+    tasks = TaskSerializer(source="other", many=True)
     available_employees = SerializerMethodField()
 
     class Meta:
@@ -31,7 +33,7 @@ class MainTaskSerializer(ModelSerializer):
         employees = Employee.objects.all()
         emp_data = {}
         for emp in employees:
-            list_task = emp.tasks.filter(status='start')
+            list_task = emp.tasks.filter(status="start")
             emp_data[emp.pk] = len(list_task)
         min_count = min(emp_data.values())
         available_employees = [
